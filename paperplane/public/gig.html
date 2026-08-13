@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gig details — PaperPlane</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a href="index.html" class="logo">
+      <span class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg></span>
+      <span class="logo-word">PaperPlane</span>
+    </a>
+    <div class="nav-links">
+      <a href="browse.html">Browse freelancers</a>
+      <a href="index.html#gigs">Open gigs</a>
+      <a href="post-gig.html">Post a gig</a>
+    </div>
+    <div class="nav-right" id="nav-right"></div>
+  </div>
+</nav>
+
+<section class="section-pad" style="padding-top:48px">
+  <div class="wrap" id="gig-root"></div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="logo" style="gap:10px">
+      <span class="logo-mark" style="width:36px;height:36px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg></span>
+      <span class="logo-word" style="font-size:1.2rem">PaperPlane</span>
+    </div>
+    <p>Made for creators.</p>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+<script>
+(async () => {
+  const id = new URLSearchParams(location.search).get('id');
+  const root = document.getElementById('gig-root');
+  let g;
+  try {
+    g = await PP.getGig(id);
+  } catch (err) {
+    root.innerHTML = ppApiErrorHTML(err);
+    return;
+  }
+
+  root.innerHTML = `
+    <div class="detail-head">
+      <div>
+        <p class="eyebrow" style="padding:.3em .8em">${PP.categoryLabel(g.category)} · ${g.type} · posted ${g.posted}</p>
+        <h1 style="font-size:2.1rem;margin:.3em 0 .1em">${g.title}</h1>
+        <p style="margin:0">Posted by ${g.creator}</p>
+      </div>
+      <div style="text-align:right">
+        <div class="pcard-price" style="font-size:1.5rem">$${g.budget}</div>
+        <span class="status-pill status-${g.status}">${g.status}</span>
+      </div>
+    </div>
+
+    <div class="grid-2" style="align-items:start">
+      <div>
+        <h3>About this gig</h3>
+        <p>${g.desc}</p>
+        <h3 style="margin-top:24px">What's included</h3>
+        <div class="pcard-tags"><span class="tag">${g.category}</span><span class="tag">${g.type}</span><span class="tag">${g.budget}</span></div>
+      </div>
+      <div class="pop-card" style="max-width:320px;padding:24px">
+        <h3>Apply for this gig</h3>
+        <p>Send a short pitch — creators reply to strong applications within a day.</p>
+        <div class="field" style="margin-top:12px">
+          <label>Your pitch</label>
+          <textarea id="pitch" placeholder="Why you're a fit for this gig…"></textarea>
+        </div>
+        <button class="btn btn-primary btn-block" id="apply-btn">Apply now</button>
+      </div>
+    </div>
+  `;
+  document.getElementById('apply-btn').addEventListener('click', () => {
+    ppRequireAuthOr('freelancer', async (user) => {
+      const pitch = document.getElementById('pitch').value.trim();
+      if (!pitch) { ppToast('Add a short pitch first'); return; }
+      try {
+        await PP.addApplication({ gigId: g.id, applicant: user.name, pitch });
+        ppToast('Application sent — check your dashboard');
+        document.getElementById('pitch').value = '';
+      } catch (err) {
+        ppToast('Could not send application — is the backend running?');
+        console.error(err);
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>

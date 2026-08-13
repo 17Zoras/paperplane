@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Freelancer profile — PaperPlane</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a href="index.html" class="logo">
+      <span class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg></span>
+      <span class="logo-word">PaperPlane</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html#services">Services</a>
+      <a href="browse.html">Browse freelancers</a>
+      <a href="post-gig.html">Post a gig</a>
+    </div>
+    <div class="nav-right" id="nav-right"></div>
+  </div>
+</nav>
+
+<section class="section-pad" style="padding-top:48px">
+  <div class="wrap" id="profile-root"></div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="logo" style="gap:10px">
+      <span class="logo-mark" style="width:36px;height:36px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg></span>
+      <span class="logo-word" style="font-size:1.2rem">PaperPlane</span>
+    </div>
+    <p>Made for creators.</p>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+<script>
+const CAT_STYLE = {
+  editing:    { bg: 'var(--pp-green)',  fg: 'var(--pp-lime)',  eyes: 'stars' },
+  thumbnails: { bg: 'var(--pp-mint)',   fg: 'var(--pp-blue)',  eyes: 'sparkle' },
+  graphics:   { bg: 'var(--pp-pink)',   fg: 'var(--pp-purple)',eyes: 'arcs' },
+  writing:    { bg: 'var(--pp-yellow)', fg: 'var(--pp-red)',   eyes: 'wink' },
+  sound:      { bg: 'var(--pp-cream)',  fg: 'var(--pp-orange)',eyes: 'wink' },
+  motion:     { bg: 'var(--pp-red)',    fg: 'var(--pp-cream)', eyes: 'hearts' },
+};
+
+(async () => {
+  const id = new URLSearchParams(location.search).get('id');
+  const root = document.getElementById('profile-root');
+  let f;
+  try {
+    f = await PP.getFreelancer(id);
+  } catch (err) {
+    root.innerHTML = ppApiErrorHTML(err);
+    return;
+  }
+
+  const s = CAT_STYLE[f.category] || CAT_STYLE.editing;
+
+  root.innerHTML = `
+    <div class="detail-head">
+      <div class="avatar-block">
+        ${ppSmiley({ eyes: s.eyes, bg: s.bg, fg: s.fg, cls: 'pop-card' })}
+        <div>
+          <p class="eyebrow" style="padding:.3em .8em">${f.verified ? '✔ Verified freelancer' : 'Unverified'} · ${PP.categoryLabel(f.category)}</p>
+          <h1 style="font-size:2.1rem;margin:.3em 0 .1em">${f.name}</h1>
+          <p style="margin:0">${f.title} · ${f.location}</p>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px">
+        <button class="btn btn-ghost" id="save-btn">Save</button>
+        <button class="btn btn-primary" id="hire-btn">Message ${f.name.split(' ')[0]}</button>
+      </div>
+    </div>
+
+    <div class="stat-strip">
+      <div><b>$${f.rate}/hr</b><span>starting rate</span></div>
+      <div><b>★ ${f.rating}</b><span>average rating</span></div>
+      <div><b>${f.jobs}</b><span>gigs completed</span></div>
+      <div><b>${f.verified ? 'Yes' : 'No'}</b><span>ID verified</span></div>
+    </div>
+
+    <div class="grid-2" style="align-items:start">
+      <div>
+        <h3>About</h3>
+        <p>${f.bio}</p>
+        <h3 style="margin-top:24px">Skills</h3>
+        <div class="pcard-tags">${f.skills.map(s=>`<span class="tag">${s}</span>`).join('')}</div>
+      </div>
+      <div class="pop-card" style="max-width:320px;padding:24px">
+        <h3>Ready to board</h3>
+        <p>Typically responds within a day. Free to message — no fee to start a conversation.</p>
+        <div class="status-pill status-open">Open to work</div>
+      </div>
+    </div>
+  `;
+  document.getElementById('hire-btn').addEventListener('click', () => {
+    ppRequireAuthOr('creator', () => ppToast(`Message sent to ${f.name} — they'll reply here soon`));
+  });
+  document.getElementById('save-btn').addEventListener('click', () => {
+    ppRequireAuthOr('creator', () => ppToast(`Saved ${f.name} to your shortlist`));
+  });
+})();
+</script>
+</body>
+</html>

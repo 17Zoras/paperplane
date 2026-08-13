@@ -1,0 +1,208 @@
+{
+  "freelancers": [
+    {
+      "id": "f1",
+      "name": "Maya Ortiz",
+      "category": "editing",
+      "title": "Long-form YouTube Editor",
+      "rate": 45,
+      "verified": true,
+      "rating": 4.9,
+      "jobs": 61,
+      "location": "Austin, US",
+      "bio": "Cuts 20-40 min narrative essays and podcast clips for creators averaging 200K+ views. Fast turnaround, Premiere + Resolve.",
+      "skills": [
+        "Premiere Pro",
+        "DaVinci Resolve",
+        "Pacing",
+        "Color"
+      ]
+    },
+    {
+      "id": "f2",
+      "name": "Kenji Sato",
+      "category": "thumbnails",
+      "title": "Click-worthy Thumbnail Designer",
+      "rate": 30,
+      "verified": true,
+      "rating": 5,
+      "jobs": 118,
+      "location": "Osaka, JP",
+      "bio": "Designed thumbnails for 6 channels that crossed 1M subs. A/B tests every concept before delivery.",
+      "skills": [
+        "Photoshop",
+        "A/B Testing",
+        "Composition"
+      ]
+    },
+    {
+      "id": "f3",
+      "name": "Priya Nair",
+      "category": "writing",
+      "title": "Script & Caption Writer",
+      "rate": 25,
+      "verified": false,
+      "rating": 4.7,
+      "jobs": 34,
+      "location": "Bengaluru, IN",
+      "bio": "Writes hooks, scripts, and SEO-friendly descriptions for tech and finance channels.",
+      "skills": [
+        "Scriptwriting",
+        "SEO",
+        "Research"
+      ]
+    },
+    {
+      "id": "f4",
+      "name": "Lucas Ferreira",
+      "category": "sound",
+      "title": "Podcast & Sound Designer",
+      "rate": 35,
+      "verified": true,
+      "rating": 4.8,
+      "jobs": 52,
+      "location": "Lisbon, PT",
+      "bio": "Mixing, mastering, and custom sound beds for podcast and YouTube creators.",
+      "skills": [
+        "Audition",
+        "Mixing",
+        "SFX"
+      ]
+    },
+    {
+      "id": "f5",
+      "name": "Sana Malik",
+      "category": "graphics",
+      "title": "Brand & Merch Designer",
+      "rate": 40,
+      "verified": true,
+      "rating": 4.9,
+      "jobs": 77,
+      "location": "Toronto, CA",
+      "bio": "Channel branding, banner art, merch mockups. Worked with 3 top-100 gaming channels.",
+      "skills": [
+        "Illustrator",
+        "Branding",
+        "Merch"
+      ]
+    },
+    {
+      "id": "f6",
+      "name": "Tomas Novak",
+      "category": "motion",
+      "title": "Motion Graphics Animator",
+      "rate": 55,
+      "verified": false,
+      "rating": 4.6,
+      "jobs": 21,
+      "location": "Prague, CZ",
+      "bio": "Intros, lower thirds, and animated explainers in After Effects.",
+      "skills": [
+        "After Effects",
+        "2D Animation"
+      ]
+    },
+    {
+      "id": "f7",
+      "name": "Aaliyah Brooks",
+      "category": "editing",
+      "title": "Shorts & Reels Specialist",
+      "rate": 28,
+      "verified": true,
+      "rating": 4.8,
+      "jobs": 96,
+      "location": "Atlanta, US",
+      "bio": "Turns long-form into scroll-stopping shorts. Knows every trend cut and caption style.",
+      "skills": [
+        "CapCut",
+        "Premiere Pro",
+        "Trends"
+      ]
+    },
+    {
+      "id": "f8",
+      "name": "Diego Ramirez",
+      "category": "thumbnails",
+      "title": "Gaming Thumbnail Artist",
+      "rate": 32,
+      "verified": true,
+      "rating": 4.9,
+      "jobs": 143,
+      "location": "Mexico City, MX",
+      "bio": "Specializes in high-energy gaming and reaction thumbnails.",
+      "skills": [
+        "Photoshop",
+        "Compositing"
+      ]
+    }
+  ],
+  "gigs": [
+    {
+      "id": "g1",
+      "title": "Editor for weekly 20-min tech review",
+      "category": "editing",
+      "budget": "400/video",
+      "type": "Ongoing",
+      "posted": "2 days ago",
+      "creator": "ByteWise Reviews",
+      "status": "open",
+      "desc": "Looking for a long-term editor to cut weekly tech review videos. Footage supplied via Frame.io. Need punchy pacing and clean B-roll sync."
+    },
+    {
+      "id": "g2",
+      "title": "Redesign channel thumbnails (10 pack)",
+      "category": "thumbnails",
+      "budget": "250 flat",
+      "type": "One-off",
+      "posted": "5 hours ago",
+      "creator": "CookWithMei",
+      "status": "open",
+      "desc": "Need a fresh, high-contrast thumbnail style for 10 upcoming recipe videos. Send past food/lifestyle work."
+    },
+    {
+      "id": "g3",
+      "title": "Script writer for finance explainer series",
+      "category": "writing",
+      "budget": "80/script",
+      "type": "Ongoing",
+      "posted": "1 day ago",
+      "creator": "MoneyMinded",
+      "status": "open",
+      "desc": "Weekly 8-minute scripts on personal finance topics. Must simplify complex ideas without dumbing them down."
+    },
+    {
+      "id": "g4",
+      "title": "Podcast mixing & mastering",
+      "category": "sound",
+      "budget": "60/episode",
+      "type": "Ongoing",
+      "posted": "3 days ago",
+      "creator": "The Sidebar Podcast",
+      "status": "open",
+      "desc": "Weekly 45-min two-host podcast. Need clean levels, noise removal, and a consistent intro/outro bed."
+    },
+    {
+      "id": "g5",
+      "title": "Channel banner + logo refresh",
+      "category": "graphics",
+      "budget": "350 flat",
+      "type": "One-off",
+      "posted": "1 week ago",
+      "creator": "Northline Fitness",
+      "status": "pending",
+      "desc": "Rebranding the channel — need a new logo, YouTube banner, and merch-ready mark."
+    },
+    {
+      "id": "g6",
+      "title": "Animated intro (8-10 sec)",
+      "category": "motion",
+      "budget": "300 flat",
+      "type": "One-off",
+      "posted": "4 days ago",
+      "creator": "Startup Stories",
+      "status": "open",
+      "desc": "Short animated logo intro, clean and corporate, After Effects preferred."
+    }
+  ],
+  "applications": []
+}

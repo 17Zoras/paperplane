@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Post a gig — PaperPlane</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a href="index.html" class="logo">
+      <span class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg></span>
+      <span class="logo-word">PaperPlane</span>
+    </a>
+    <div class="nav-links">
+      <a href="browse.html">Browse freelancers</a>
+      <a href="index.html#gigs">Open gigs</a>
+      <a href="post-gig.html">Post a gig</a>
+    </div>
+    <div class="nav-right" id="nav-right"></div>
+  </div>
+</nav>
+
+<section class="section-pad" style="padding-top:48px">
+  <div class="wrap">
+    <div style="text-align:center;max-width:520px;margin:0 auto 36px">
+      <span class="eyebrow pop-card">File a flight plan</span>
+      <h2 style="margin-top:.5em">Post your gig</h2>
+      <p>Describe what you need — PaperPlane sends it straight to freelancers who specialize in it.</p>
+    </div>
+
+    <div class="pop-card-lg form-card">
+      <form id="gig-form">
+        <div class="field">
+          <label>Gig title</label>
+          <input type="text" id="g-title" required placeholder="e.g. Editor for weekly 15-min vlog">
+        </div>
+        <div class="field">
+          <label>Specialty</label>
+          <div class="chip-select" id="g-category"></div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Budget</label>
+            <input type="text" id="g-budget" required placeholder="e.g. 300 flat or 40/hr">
+          </div>
+          <div class="field">
+            <label>Gig type</label>
+            <select id="g-type">
+              <option>One-off</option>
+              <option>Ongoing</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>Description</label>
+          <textarea id="g-desc" required placeholder="What does the freelancer need to know? Footage format, turnaround, style references…"></textarea>
+        </div>
+        <button class="btn btn-primary btn-block" type="submit">Post gig</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="logo" style="gap:10px">
+      <span class="logo-mark" style="width:36px;height:36px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg></span>
+      <span class="logo-word" style="font-size:1.2rem">PaperPlane</span>
+    </div>
+    <p>Made for creators.</p>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+<script>
+  const catWrap = document.getElementById('g-category');
+  catWrap.innerHTML = PP.CATEGORIES.map((c,i) => `<div class="chip-opt${i===0?' active':''}" data-cat="${c.id}">${c.icon} ${c.label}</div>`).join('');
+  catWrap.addEventListener('click', (e) => {
+    if (!e.target.classList.contains('chip-opt')) return;
+    catWrap.querySelectorAll('.chip-opt').forEach(c => c.classList.remove('active'));
+    e.target.classList.add('active');
+  });
+
+  document.getElementById('gig-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    ppRequireAuthOr('creator', async (user) => {
+      const gig = {
+        title: document.getElementById('g-title').value,
+        category: catWrap.querySelector('.active').dataset.cat,
+        budget: document.getElementById('g-budget').value,
+        type: document.getElementById('g-type').value,
+        desc: document.getElementById('g-desc').value,
+        creator: user.name,
+      };
+      try {
+        const created = await PP.addGig(gig);
+        ppToast('Gig posted — freelancers can now apply');
+        setTimeout(() => location.href = `gig.html?id=${created.id}`, 700);
+      } catch (err) {
+        ppToast('Could not post gig — is the backend running?');
+        console.error(err);
+      }
+    });
+  });
+</script>
+</body>
+</html>

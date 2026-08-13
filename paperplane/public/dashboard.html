@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — PaperPlane</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a href="index.html" class="logo">
+      <span class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg></span>
+      <span class="logo-word">PaperPlane</span>
+    </a>
+    <div class="nav-links">
+      <a href="browse.html">Browse freelancers</a>
+      <a href="index.html#gigs">Open gigs</a>
+      <a href="post-gig.html">Post a gig</a>
+    </div>
+    <div class="nav-right" id="nav-right"></div>
+  </div>
+</nav>
+
+<section class="section-pad" style="padding-top:48px">
+  <div class="wrap" id="dash-root"></div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="logo" style="gap:10px">
+      <span class="logo-mark" style="width:36px;height:36px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg></span>
+      <span class="logo-word" style="font-size:1.2rem">PaperPlane</span>
+    </div>
+    <p>Made for creators.</p>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+<script>
+  const user = PP.getUser();
+  const root = document.getElementById('dash-root');
+
+  if (!user) {
+    root.innerHTML = `<div class="empty-state pop-card"><span class="eyebrow">Not signed in</span><h3 style="margin-top:.6em">Log in to see your dashboard</h3><p>Track your posted gigs and applications once you're signed in.</p><button class="btn btn-primary" style="margin-top:14px" onclick="ppOpenAuth('login')">Log in</button></div>`;
+  } else {
+    (async () => {
+      const isCreator = user.role === 'creator';
+      root.innerHTML = `
+        <span class="eyebrow pop-card">${isCreator ? 'Creator' : 'Freelancer'} dashboard</span>
+        <h2 style="margin-top:.5em">Welcome back, ${user.name.split(' ')[0]}</h2>
+        <div class="dash-tabs">
+          <button class="active" data-tab="a">${isCreator ? 'Your posted gigs' : 'Your applications'}</button>
+          <button data-tab="b">${isCreator ? 'Applications received' : 'Recommended gigs'}</button>
+        </div>
+        <div id="tab-a">Loading…</div>
+        <div id="tab-b" style="display:none">Loading…</div>
+      `;
+
+      let allGigs, allApps;
+      try {
+        [allGigs, allApps] = await Promise.all([PP.getGigs(), PP.getApplications()]);
+      } catch (err) {
+        document.getElementById('tab-a').innerHTML = ppApiErrorHTML(err);
+        document.getElementById('tab-b').innerHTML = '';
+        return;
+      }
+
+      const myGigs = allGigs.filter(g => g.creator === user.name);
+      const myApps = allApps.filter(a => a.applicant === user.name);
+
+      function gigsList(list) {
+        if (!list.length) return `<div class="empty-state pop-card"><span class="eyebrow">Empty</span><h3 style="margin-top:.6em">Nothing here yet</h3><p>${isCreator ? 'Post a gig to see it listed here.' : 'Apply to a gig to see it listed here.'}</p><a href="${isCreator ? 'post-gig.html' : 'browse.html'}" class="btn btn-primary" style="margin-top:14px">${isCreator ? 'Post a gig' : 'Browse gigs'}</a></div>`;
+        return list.map(g => `
+          <div class="dash-row pop-card">
+            <div class="meta">
+              <a href="gig.html?id=${g.id}" style="font-weight:700">${g.title}</a>
+              <span>${g.creator} · ${g.budget} · posted ${g.posted}</span>
+            </div>
+            <span class="status-pill status-${g.status}">${g.status}</span>
+          </div>`).join('');
+      }
+
+      function appsList(list) {
+        if (!list.length) return `<div class="empty-state pop-card"><span class="eyebrow">Empty</span><h3 style="margin-top:.6em">No applications yet</h3><p>${isCreator ? 'Applications from freelancers will show up here.' : 'Applications you submit will show up here.'}</p></div>`;
+        return list.map(a => `
+          <div class="dash-row pop-card">
+            <div class="meta">
+              <span style="font-weight:700;color:var(--pp-ink)">${a.gigTitle}</span>
+              <span>${isCreator ? 'from ' + a.applicant : 'you applied'} · ${a.date}</span>
+            </div>
+            <span class="status-pill status-${a.status}">${a.status}</span>
+          </div>`).join('');
+      }
+
+      document.getElementById('tab-a').innerHTML = isCreator ? gigsList(myGigs) : appsList(myApps);
+      document.getElementById('tab-b').innerHTML = isCreator ? appsList(allApps) : gigsList(allGigs.slice(0, 4));
+
+      document.querySelectorAll('.dash-tabs button').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.dash-tabs button').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          document.getElementById('tab-a').style.display = btn.dataset.tab === 'a' ? 'block' : 'none';
+          document.getElementById('tab-b').style.display = btn.dataset.tab === 'b' ? 'block' : 'none';
+        });
+      });
+    })();
+  }
+</script>
+</body>
+</html>

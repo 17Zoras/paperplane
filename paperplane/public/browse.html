@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Browse freelancers — PaperPlane</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a href="index.html" class="logo">
+      <span class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg></span>
+      <span class="logo-word">PaperPlane</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html#services">Services</a>
+      <a href="index.html#how">How it works</a>
+      <a href="browse.html">Browse freelancers</a>
+      <a href="post-gig.html">Post a gig</a>
+    </div>
+    <div class="nav-right" id="nav-right"></div>
+  </div>
+</nav>
+
+<section class="section-pad" style="padding-top:48px">
+  <div class="wrap">
+    <span class="eyebrow pop-card">Find your crew</span>
+    <h2 style="margin-top:.5em;font-size:2.3rem">Browse verified freelancers</h2>
+    <p style="max-width:56ch">Filter by specialty, search by name or skill, and open a profile to see rates, ratings, and past work.</p>
+
+    <div class="filter-bar pop-card">
+      <input type="text" id="search" placeholder="Search by name, title, or skill…">
+      <select id="filter-category"><option value="">All specialties</option></select>
+      <select id="filter-sort">
+        <option value="rating">Sort: Top rated</option>
+        <option value="rate-asc">Sort: Rate — low to high</option>
+        <option value="rate-desc">Sort: Rate — high to low</option>
+        <option value="jobs">Sort: Most jobs completed</option>
+      </select>
+    </div>
+
+    <div id="results-count" class="mono" style="font-size:.82rem;color:var(--muted-foreground);margin-bottom:16px;font-weight:600"></div>
+    <div class="grid-3" id="results-grid"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="logo" style="gap:10px">
+      <span class="logo-mark" style="width:36px;height:36px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg></span>
+      <span class="logo-word" style="font-size:1.2rem">PaperPlane</span>
+    </div>
+    <p>Made for creators.</p>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+<script>
+  const CAT_STYLE = {
+    editing:    { bg: 'var(--pp-green)',  fg: 'var(--pp-lime)',  eyes: 'stars' },
+    thumbnails: { bg: 'var(--pp-mint)',   fg: 'var(--pp-blue)',  eyes: 'sparkle' },
+    graphics:   { bg: 'var(--pp-pink)',   fg: 'var(--pp-purple)',eyes: 'arcs' },
+    writing:    { bg: 'var(--pp-yellow)', fg: 'var(--pp-red)',   eyes: 'wink' },
+    sound:      { bg: 'var(--pp-cream)',  fg: 'var(--pp-orange)',eyes: 'wink' },
+    motion:     { bg: 'var(--pp-red)',    fg: 'var(--pp-cream)', eyes: 'hearts' },
+  };
+
+  const catSelect = document.getElementById('filter-category');
+  catSelect.innerHTML += PP.CATEGORIES.map(c => `<option value="${c.id}">${c.icon} ${c.label}</option>`).join('');
+
+  const params = new URLSearchParams(location.search);
+  if (params.get('category')) catSelect.value = params.get('category');
+
+  function passHTML(f) {
+    const s = CAT_STYLE[f.category] || CAT_STYLE.editing;
+    return `<a href="profile.html?id=${f.id}" class="pop-card pop-hover pcard" style="text-decoration:none;color:inherit">
+      <div class="pcard-avatar" style="background:${s.bg}">
+        ${ppSmiley({ eyes: s.eyes, bg: 'transparent', fg: s.fg })}
+      </div>
+      <div class="pcard-main">
+        <p class="eyebrow" style="margin-bottom:8px;padding:.3em .7em">${f.verified ? '✔ VERIFIED' : 'UNVERIFIED'}</p>
+        <h3 class="pcard-title">${f.name}</h3>
+        <p class="pcard-sub">${f.title} · ${f.location}</p>
+        <div class="pcard-tags">${f.skills.slice(0,2).map(s=>`<span class="tag">${s}</span>`).join('')}</div>
+        <div class="pcard-foot"><span class="pcard-price">$${f.rate}/hr</span><span class="mono" style="font-size:.78rem;font-weight:700">★ ${f.rating} (${f.jobs})</span></div>
+      </div>
+    </a>`;
+  }
+
+  async function render() {
+    const q = document.getElementById('search').value.trim().toLowerCase();
+    const cat = catSelect.value;
+    const sort = document.getElementById('filter-sort').value;
+    const countEl = document.getElementById('results-count');
+    const grid = document.getElementById('results-grid');
+
+    countEl.textContent = 'Loading…';
+    let all;
+    try {
+      all = await PP.getFreelancers();
+    } catch (err) {
+      countEl.textContent = '';
+      grid.innerHTML = ppApiErrorHTML(err);
+      return;
+    }
+
+    let list = all.filter(f => {
+      const matchesCat = !cat || f.category === cat;
+      const matchesQ = !q || [f.name, f.title, ...f.skills].join(' ').toLowerCase().includes(q);
+      return matchesCat && matchesQ;
+    });
+
+    if (sort === 'rating') list.sort((a,b) => b.rating - a.rating);
+    if (sort === 'rate-asc') list.sort((a,b) => a.rate - b.rate);
+    if (sort === 'rate-desc') list.sort((a,b) => b.rate - a.rate);
+    if (sort === 'jobs') list.sort((a,b) => b.jobs - a.jobs);
+
+    countEl.textContent = `${list.length} freelancer${list.length===1?'':'s'} found`;
+    grid.innerHTML = list.length ? list.map(passHTML).join('') :
+      `<div class="empty-state pop-card" style="grid-column:1/-1"><span class="eyebrow">No matches</span><h3 style="margin-top:.6em">No freelancers fit that search</h3><p>Try a different specialty or clear your search.</p></div>`;
+  }
+
+  document.getElementById('search').addEventListener('input', render);
+  catSelect.addEventListener('change', render);
+  document.getElementById('filter-sort').addEventListener('change', render);
+  render();
+</script>
+</body>
+</html>

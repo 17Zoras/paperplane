@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PaperPlane — Hire Verified Creative Freelancers</title>
+<meta name="description" content="PaperPlane connects YouTubers and influencers with verified video editors, thumbnail designers, writers and sound designers.">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a href="index.html" class="logo">
+      <span class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg></span>
+      <span class="logo-word">PaperPlane</span>
+    </a>
+    <div class="nav-links">
+      <a href="#services">Services</a>
+      <a href="#how">How it works</a>
+      <a href="#talent">Talent</a>
+      <a href="browse.html">Browse freelancers</a>
+    </div>
+    <div class="nav-right" id="nav-right"></div>
+  </div>
+</nav>
+
+<main>
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow pop-card">For creators who ship weekly</span>
+        <h1 style="margin-top:.5em">Build your <span class="hero-tilt">dream</span><br>creative team.</h1>
+        <p style="max-width:44ch;font-size:1.1rem">PaperPlane connects YouTubers and influencers with verified editors, designers, writers and sound pros. No endless DMs. No ghosting. Just good people who deliver.</p>
+        <div class="hero-actions">
+          <a href="browse.html" class="btn btn-primary">Find a freelancer</a>
+          <a href="#talent" class="btn btn-ghost">Join as talent</a>
+        </div>
+        <div class="hero-stats">
+          <span><strong>4,200+</strong> verified pros</span>
+          <span><strong>48h</strong> avg. match time</span>
+          <span><strong>4.9/5</strong> creator rating</span>
+        </div>
+      </div>
+      <div class="hero-grid-icons" id="hero-icons"></div>
+    </div>
+  </section>
+
+  <div class="marquee">
+    <div class="marquee-track" id="marquee-track"></div>
+  </div>
+
+  <section id="services" class="section-pad">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <h2 style="max-width:20ch">Every role your channel needs</h2>
+          <p>Hand-checked portfolios, real client reviews, and a trial task before you commit.</p>
+        </div>
+      </div>
+      <div class="grid-3" id="services-grid"></div>
+    </div>
+  </section>
+
+  <section id="how" class="section-cream section-pad">
+    <div class="wrap">
+      <h2>How PaperPlane works</h2>
+      <div class="grid-3" id="steps-grid" style="margin-top:36px"></div>
+    </div>
+  </section>
+
+  <section id="gigs" class="section-pad">
+    <div class="wrap">
+      <div class="section-head">
+        <div><h2 style="max-width:20ch">Open gigs right now</h2><p>Live listings pulled straight from the PaperPlane API.</p></div>
+        <a href="post-gig.html" class="btn btn-ghost btn-sm">Post a gig →</a>
+      </div>
+      <div class="grid-3" id="gigs-grid"></div>
+    </div>
+  </section>
+
+  <section id="talent" class="section-cream section-pad">
+    <div class="wrap grid-2" style="align-items:center">
+      <div class="talent-promo pop-card-lg" id="talent-promo"></div>
+      <ul class="feature-list" id="feature-list" style="list-style:none;padding:0;margin:0"></ul>
+    </div>
+  </section>
+
+  <section class="section-pad">
+    <div class="wrap">
+      <div class="cta-block pop-card-lg" id="cta-block">
+        <div class="cta-icons" id="cta-icons"></div>
+        <h2 style="max-width:26ch;margin-left:auto;margin-right:auto">Your next upload deserves a real team.</h2>
+        <form class="cta-form" id="cta-form">
+          <input type="email" required placeholder="you@channel.com" aria-label="Email address" class="pop-card">
+          <button type="submit" class="btn btn-yellow">Get matched</button>
+        </form>
+        <p style="color:var(--pp-cream);opacity:.85;margin-top:14px">Free to browse. No card needed.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="logo" style="gap:10px">
+      <span class="logo-mark" style="width:36px;height:36px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg></span>
+      <span class="logo-word" style="font-size:1.2rem">PaperPlane</span>
+    </div>
+    <p id="footer-year">Made for creators.</p>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+<script>
+const C = {
+  blue: 'var(--pp-blue)', green: 'var(--pp-green)', mint: 'var(--pp-mint)', lime: 'var(--pp-lime)',
+  pink: 'var(--pp-pink)', magenta: 'var(--pp-magenta)', purple: 'var(--pp-purple)', yellow: 'var(--pp-yellow)',
+  red: 'var(--pp-red)', orange: 'var(--pp-orange)', cream: 'var(--pp-cream)', ink: 'var(--pp-ink)', white: '#ffffff',
+};
+
+const SERVICES = [
+  { title: 'Video Editors', desc: 'Long-form, shorts, reels. Cuts that keep retention high.', bg: C.green, fg: C.lime, eyes: 'stars', category: 'editing' },
+  { title: 'Thumbnail Designers', desc: 'Click-worthy frames tested against your niche.', bg: C.mint, fg: C.blue, eyes: 'sparkle', category: 'thumbnails' },
+  { title: 'Graphic Designers', desc: 'Channel art, overlays, brand kits, merch drops.', bg: C.pink, fg: C.purple, eyes: 'arcs', category: 'graphics' },
+  { title: 'Content Writers', desc: 'Scripts, hooks, titles and descriptions that land.', bg: C.yellow, fg: C.red, eyes: 'wink', category: 'writing' },
+  { title: 'Sound Designers', desc: 'Mixing, SFX, music beds and clean voice cleanup.', bg: C.cream, fg: C.orange, eyes: 'wink', category: 'sound' },
+  { title: 'Motion & VFX', desc: 'Animated intros, kinetic type, subtle 3D flair.', bg: C.red, fg: C.cream, eyes: 'hearts', category: 'motion' },
+];
+
+const STEPS = [
+  { n: '01', title: 'Tell us the brief', desc: 'Format, turnaround, budget and vibe. Two minutes, tops.', bg: C.magenta, fg: C.white, eyes: 'arcs' },
+  { n: '02', title: 'Get matched', desc: 'Three verified pros with real work from your niche.', bg: C.orange, fg: C.green, eyes: 'squint' },
+  { n: '03', title: 'Ship it', desc: 'Milestones, revisions and clear payment terms in one place.', bg: C.blue, fg: C.yellow, eyes: 'dots' },
+];
+
+const HERO_ICONS = [
+  { bg: C.green, fg: C.lime, eyes: 'stars' }, { bg: C.mint, fg: C.blue, eyes: 'sparkle' }, { bg: C.pink, fg: C.purple, eyes: 'arcs' },
+  { bg: C.yellow, fg: C.red, eyes: 'wink' }, { bg: C.cream, fg: C.orange, eyes: 'wink' }, { bg: C.red, fg: C.cream, eyes: 'hearts' },
+  { bg: C.magenta, fg: C.white, eyes: 'arcs' }, { bg: C.orange, fg: C.green, eyes: 'squint' }, { bg: C.blue, fg: C.yellow, eyes: 'dots' },
+];
+
+const TALENT_FEATURES = [
+  { t: 'Verified only', d: 'ID, portfolio and past-client checks before anyone gets listed.', bg: C.lime, fg: C.green, eyes: 'stars' },
+  { t: 'Clear milestones', d: 'Scope and payment terms agreed before work starts.', bg: C.mint, fg: C.blue, eyes: 'dots' },
+  { t: 'Trial tasks', d: 'Test a pro on one small paid task before a long contract.', bg: C.yellow, fg: C.red, eyes: 'wink' },
+  { t: 'Creator-first support', d: 'Real humans on chat when a deadline gets scary.', bg: C.pink, fg: C.purple, eyes: 'arcs' },
+];
+
+document.getElementById('hero-icons').innerHTML = HERO_ICONS.map(s => ppSmiley({ eyes: s.eyes, bg: s.bg, fg: s.fg, cls: 'pop-card pp-float' })).join('');
+
+document.getElementById('marquee-track').innerHTML = Array.from({ length: 8 }).map(() =>
+  `<span>EDITORS ✦ THUMBNAILS ✦ SCRIPTS ✦ SOUND ✦ MOTION ✦ BRANDING</span>`
+).join('');
+
+document.getElementById('services-grid').innerHTML = SERVICES.map(s => `
+  <a href="browse.html?category=${s.category}" class="pop-card pop-hover service-card" style="display:block">
+    ${ppSmiley({ eyes: s.eyes, bg: s.bg, fg: s.fg, rounded: 'rounded-none' })}
+    <div class="service-body">
+      <h3>${s.title}</h3>
+      <p style="margin:0">${s.desc}</p>
+    </div>
+  </a>
+`).join('');
+
+document.getElementById('steps-grid').innerHTML = STEPS.map(s => `
+  <div class="pop-card pop-hover step-card">
+    <div class="step-head">
+      <span class="step-num">${s.n}</span>
+      ${ppSmiley({ eyes: s.eyes, bg: s.bg, fg: s.fg })}
+    </div>
+    <h3 style="margin-top:18px">${s.title}</h3>
+    <p style="margin:0">${s.desc}</p>
+  </div>
+`).join('');
+
+document.getElementById('talent-promo').innerHTML = `
+  ${ppSmiley({ eyes: 'hearts', bg: C.white, fg: C.magenta, cls: 'pop-card' })}
+  <h2 style="margin-top:20px">Freelancer? Get booked, not ignored.</h2>
+  <p>Verify once, show your best work, and get matched with creators who actually reply. Clear milestones on every gig.</p>
+  <a href="browse.html" class="btn btn-ghost" style="margin-top:8px" onclick="ppRequireAuthOr('freelancer', ()=>{ location.href='dashboard.html'; }); return false;">Apply as talent</a>
+`;
+
+document.getElementById('feature-list').innerHTML = TALENT_FEATURES.map(f => `
+  <li class="pop-card pop-hover feature-row">
+    ${ppSmiley({ eyes: f.eyes, bg: f.bg, fg: f.fg })}
+    <div><h3 style="margin-bottom:4px">${f.t}</h3><p style="margin:0">${f.d}</p></div>
+  </li>
+`).join('');
+
+document.getElementById('cta-icons').innerHTML = [
+  { bg: C.yellow, fg: C.red, eyes: 'stars' }, { bg: C.cream, fg: C.blue, eyes: 'arcs' }, { bg: C.magenta, fg: C.white, eyes: 'hearts' },
+].map(s => ppSmiley({ eyes: s.eyes, bg: s.bg, fg: s.fg, cls: 'pop-card' })).join('');
+
+document.getElementById('footer-year').textContent = `© ${new Date().getFullYear()} PaperPlane. Made for creators.`;
+
+document.getElementById('cta-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  ppOpenAuth('signup');
+});
+
+function gigPassHTML(g) {
+  return `<a href="gig.html?id=${g.id}" class="pop-card pop-hover pcard" style="text-decoration:none;color:inherit">
+    <div class="pcard-avatar" style="background:${C.mint}">
+      ${ppSmiley({ eyes: 'sparkle', bg: 'transparent', fg: C.blue })}
+    </div>
+    <div class="pcard-main">
+      <p class="eyebrow" style="margin-bottom:8px;padding:.3em .7em">${PP.categoryLabel(g.category).toUpperCase()}</p>
+      <h3 class="pcard-title">${g.title}</h3>
+      <p class="pcard-sub">${g.creator} · ${g.type}</p>
+      <div class="pcard-tags"><span class="tag">${g.posted}</span></div>
+      <div class="pcard-foot"><span class="pcard-price">$${g.budget}</span><span class="status-pill status-${g.status}">${g.status}</span></div>
+    </div>
+  </a>`;
+}
+
+PP.getGigs().then(gigs => {
+  document.getElementById('gigs-grid').innerHTML = gigs.slice(0, 3).map(gigPassHTML).join('');
+}).catch(err => {
+  document.getElementById('gigs-grid').innerHTML = ppApiErrorHTML(err);
+});
+</script>
+</body>
+</html>
